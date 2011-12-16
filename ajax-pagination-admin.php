@@ -65,11 +65,23 @@
 						var maxpages = '. $maxpages .';
 						
 						  $(document).ready(function(){
-												$("#ajax_pagination").ajaxpaging({
-																query: wpquery,
-																maxpage: maxpages
-												});
-										});
+              	var data = {
+                  action: "my_action",
+                  whatever: 1234
+                };
+
+                // since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
+                jQuery.post(ajaxurl, data, function(response) {
+                  console.log("Got this from the server: " + response);
+                });
+
+                  /*									
+                   $("#ajax_pagination").ajaxpaging({
+                      query: wpquery,
+                      maxpage: maxpages
+									 });
+                 */
+                    });
 			</script>
 		';
 		echo $linkHTML;
@@ -118,5 +130,28 @@
 		
 		//print the next button link to the site
 		//add_action('wp_footer', 'genarate_ajax_pagination');
-  
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    // Testing
+    add_action('wp_ajax_my_action', 'my_action_callback');
+
+    function my_action_callback() {
+      global $wpdb; // this is how you get access to the database
+
+      $whatever = intval( $_POST['whatever'] );
+
+      $whatever += 10;
+
+            echo $whatever;
+
+      die(); // this is required to return a proper result
+    }
 ?>
