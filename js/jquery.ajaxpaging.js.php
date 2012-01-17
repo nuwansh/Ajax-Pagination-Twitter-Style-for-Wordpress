@@ -21,6 +21,7 @@
   }
 ?>
 
+
 (function($) {
 	/**
 	 * This plugin is used to Ajax Pagenavigation functionlity 
@@ -34,30 +35,33 @@
 				var $this = $(this);
 				
 				//get the variables of query
-				var queryString = opts.query;
-				var maxpages = opts.maxpage;
-				var tempPageCount = 1;
+				var maxpages  = opts.maxpages;
+        var loopfile  = opts.loop;
+        var query     = opts.query;
+				var paged     = 1;
 				
 					$this.bind('click', function(){	
-							tempPageCount ++;
+							paged ++;
 							
 							//Ajax request for query next post item from the database
-							      $.ajax({
-												type: "POST",
-												url: "<?php echo WP_PLUGIN_URL; ?>/ajax-pagination/ajax-query.php",
-												data: queryString + "&paged=" + tempPageCount,
-												dataType: "html",
-												beforeSend: loadingImage,
-												success: function(msg){
-													//append the new content 
-													$("#ajax-post-container").append("<hr class='ajaxpaging-separator' />"+msg);
-													
-													/** hide next link for fetch more post if you are in the last page */
-													if(maxpages == tempPageCount)
-														$('#ajax_pagination').hide();
-												},
-												complete: hideloading
-											});
+              $.ajax({
+                  type: "POST",
+                  url: "<?php echo admin_url( 'admin-ajax.php' ) ?>",
+                  data: "paged="+paged+"&action=ajax_navigation&loop="+loopfile+"&"+query,
+                  dataType: "html",
+                  beforeSend: loadingImage,
+                  success: function(msg){
+                    //append the new content 
+                    $("#ajax-post-container").append("<hr class='ajaxpaging-separator' />"+msg);
+                    
+                    /** hide next link for fetch more post if you are in the last page */
+                    if(maxpages == paged)
+                      $('#ajax_pagination_btn').hide();
+                    /* trigger CompletPagination callback */
+                      $("#ajax_pagination_btn").trigger("complete-paginate");
+                  },
+                  complete: hideloading
+                });
 							return false; 
 					});
 					
@@ -78,7 +82,6 @@
 		
 		// plugin defaults
 		$.fn.ajaxpaging.defaults = {
-				query: '',
-				maxpage: 0
+				maxpage: 1
 		};
 })(jQuery);

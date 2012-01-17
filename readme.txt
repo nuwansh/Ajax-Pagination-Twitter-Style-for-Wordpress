@@ -2,8 +2,8 @@
 Contributors: nuwansh
 Tags: AJAX, jquery, pagination, twitter
 Requires at least: 3.0.0
-Tested up to: 3.0.1
-Stable Tag: 1.1
+Tested up to: 3.3.1
+Stable Tag: 1.2
 
 This plugin convert WordPress defautl pagination behavior to the Twitter sytle using Ajax functionality. 
 
