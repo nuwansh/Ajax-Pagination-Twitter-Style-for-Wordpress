@@ -18,3 +18,5 @@ The "Ajax Pagination (Twitter style) plugin is used to convert WrodPress paginat
 ````php
 <?php if(function_exists('genarate_ajax_pagination')) genarate_ajax_pagination('Read More', 'blue');  ?>
 ````
+
+### Usage
